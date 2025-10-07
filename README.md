@@ -2,7 +2,7 @@
 # 🚖 Megapark Taxi WeekBot  
 
 > Telegram kanali uchun avtomatik haftalik post yuboruvchi bot  
-> Har kuni soat **06:00 (Asia/Tashkent)** da rasm va motivatsion xabar joylaydi  
+> Har kuni soat **07:00 (Asia/Tashkent)** da rasm va motivatsion xabar joylaydi  
 
 ---
 
