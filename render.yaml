@@ -1,0 +1,19 @@
+# render.yaml — Render Blueprint
+services:
+  - type: worker
+    name: weekbot-worker
+    env: python
+    region: frankfurt          # istasang: oregon, ohio, singapore, frankfurt
+    plan: starter              # free ham bo‘lishi mumkin, lekin u uxlab qolishi mumkin
+    autoDeploy: true
+
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+
+    envVars:
+      - key: BOT_TOKEN         # bu qiymatni Render’da qo‘lda kiritasan
+        sync: false
+      - key: LOG_LEVEL
+        value: INFO
+      - key: PYTHONUNBUFFERED  # loglar real-time chiqsin
+        value: "1"
