@@ -3,10 +3,9 @@ import logging
 import os
 import random
 from pytz import timezone
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, InputFile, Update, Bot
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, InputFile, Update, BotCommand
 from telegram.constants import ParseMode
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-import asyncio
 
 # ===== LOGGING =====
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(name)s | %(message)s")
@@ -38,19 +37,19 @@ TZ = timezone("Asia/Tashkent")
 
 WEEKLY_CONTENT = {
     0: {
-        "text": "💎✨ DUSHANBA TONGI MUBORAK! Yangi hafta – sizlarga omadli safarlar, muloyim mijozlar, tinch yo‘llar tilaymiz! 🚖💛",
+        "text": "💎✨ DUSHANBA TONGI MUBORAK! \n\nYangi hafta – sizlarga omadli safarlar, muloyim mijozlar, tinch yo‘llar tilaymiz! 🚖💛",
         "image": "images/monday.png"
     },
     1: {
-        "text": "🚀💫 SESHANBA MUBORAK!  Yo‘l sizni kutyapti, rul sizni sog‘ingan. 🌈 Bugungi safaringiz ham baraka bilan to‘lsin! 💪🚖",
+        "text": "🚀💫 SESHANBA MUBORAK!  \n\nYo‘l sizni kutyapti, rul sizni sog‘ingan.  Bugungi safaringiz ham baraka bilan to‘lsin! 💪🚖",
         "image": "images/tuesday.png"
     },
     2: {
-        "text": "💫🌟 CHORSHANBA MUBORAK!  Haftaning o‘rtasi – to‘xtamaslik va harakatda bo‘lish vaqti! 🔥 Bugun omad siz bilan bo‘lsin! 🚕💛",
+        "text": "💫🌟 CHORSHANBA MUBORAK!  \n\nHaftaning o‘rtasi – to‘xtamaslik va harakatda bo‘lish vaqti! 🔥 Bugun omad siz bilan bo‘lsin! 🚕💛",
         "image": "images/wednesday.png"
     },
     3: {
-        "text": "🌿💚 PAYSHANBA MUBORAK! Bugungi kuningiz mijozlarga, safarlaringiz esa omadga to‘la bo‘lsin! ✨🚖💛",
+        "text": "🌿💚 PAYSHANBA MUBORAK! \n\nBugungi kuningiz mijozlarga, safarlaringiz esa omadga to‘la bo‘lsin! ✨🚖💛",
         "image": "images/thursday.png"
     },
     4: {
@@ -58,7 +57,7 @@ WEEKLY_CONTENT = {
         "image": "images/friday.png"
     },
     5: {
-        "text": "🌈💎 SHANBA MUBORAK! Dam oling, kuch to‘plang, yangi safarlarga tayyorlaning. 😌 Tinchlik va baraka siz bilan bo‘lsin! 🚖✨",
+        "text": "💎 SHANBA MUBORAK! \n\nDam oling, kuch to‘plang, yangi safarlarga tayyorlaning. 😌 Tinchlik va baraka siz bilan bo‘lsin! 🚖✨",
         "image": "images/saturday.png"
     },
     6: {
@@ -134,18 +133,95 @@ async def cmd_resolve(update: Update, context: ContextTypes.DEFAULT_TYPE):
         log.exception("/resolve xato: %s", e)
         await update.message.reply_text(f"❌ Resolve error: {e}")
 
+# === Commands for each weekday ===
+async def cmd_dushanba(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_day_post(update, context, 0)
+
+async def cmd_seshanba(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_day_post(update, context, 1)
+
+async def cmd_chorshanba(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_day_post(update, context, 2)
+
+async def cmd_payshanba(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_day_post(update, context, 3)
+
+async def cmd_juma(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_day_post(update, context, 4)
+
+async def cmd_shanba(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_day_post(update, context, 5)
+
+async def cmd_yakshanba(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await send_day_post(update, context, 6)
+
+# === Helper: send post for a given day index ===
+async def send_day_post(update: Update, context: ContextTypes.DEFAULT_TYPE, day_index: int):
+    content = WEEKLY_CONTENT.get(day_index)
+    if not content:
+        await update.message.reply_text("😕 Bu kunga post topilmadi.")
+        return
+
+    caption = f"{content['text']}\n\n{random.choice(EXTRA_TAGLINES)}"
+    kb = build_keyboard()
+    img = content["image"]
+
+    try:
+        if os.path.exists(img):
+            with open(img, "rb") as f:
+                await update.message.reply_photo(photo=f, caption=caption, parse_mode=ParseMode.HTML, reply_markup=kb)
+        else:
+            await update.message.reply_photo(photo=img, caption=caption, parse_mode=ParseMode.HTML, reply_markup=kb)
+        log.info(f"✅ {day_index} kunlik post yuborildi.")
+    except Exception as e:
+        log.exception("❌ Post yuborishda xato: %s", e)
+        await update.message.reply_text(f"❌ Xatolik: {e}")
+
+async def set_bot_commands(app):
+    commands = [
+        BotCommand("dushanba", "Dushanba uchun post"),
+        BotCommand("seshanba", "Seshanba uchun post"),
+        BotCommand("chorshanba", "Chorshanba uchun post"),
+        BotCommand("payshanba", "Payshanba uchun post"),
+        BotCommand("juma", "Juma uchun post"),
+        BotCommand("shanba", "Shanba uchun post"),
+        BotCommand("yakshanba", "Yakshanba uchun post"),
+        
+    ]
+     
+    await app.bot.set_my_commands(commands)
+
+
 def main():
     log.info("🚀 Bot start…")
     app = ApplicationBuilder().token(BOT_TOKEN).build()
-    # Verify bot access to channel
-     
-    # asyncio.run(verify_access())
+
+    app = (
+    ApplicationBuilder()
+    .token(BOT_TOKEN)
+    .post_init(set_bot_commands)  # 👈 avtomatik ishga tushadi
+    .build()
+    )
+
+
+    app.add_handler(CommandHandler("dushanba", cmd_dushanba))
+    app.add_handler(CommandHandler("seshanba", cmd_seshanba))
+    app.add_handler(CommandHandler("chorshanba", cmd_chorshanba))
+    app.add_handler(CommandHandler("payshanba", cmd_payshanba))
+    app.add_handler(CommandHandler("juma", cmd_juma))
+    app.add_handler(CommandHandler("shanba", cmd_shanba))
+    app.add_handler(CommandHandler("yakshanba", cmd_yakshanba))
+
     app.add_handler(CommandHandler("test", cmd_test))
     app.add_handler(CommandHandler("whereami", cmd_whereami))
     app.add_handler(CommandHandler("resolve", cmd_resolve))
+  
+    
 
-    # JobQueue (06:00 Asia/Tashkent)
-    run_time = dt.time(hour=4, minute=55, tzinfo=TZ)
+    
+
+    # JobQueue (07:00 Asia/Tashkent)
+    run_time = dt.time(hour=7, minute=0, tzinfo=TZ)
     app.job_queue.run_daily(daily_job, time=run_time, name="daily_post")
     log.info("⏲️ Job sched: 06:00 Asia/Tashkent")
 
