@@ -14,7 +14,7 @@ log = logging.getLogger("weekbot")
 
 # ===== CONFIG =====
 BOT_TOKEN = "8395599976:AAHAWuWnoGleKK9c1Pn3bAGUUK9f1cDspb0"          # sizniki
-CHAT_ID   = "@mptaxi"           # gruppa ID ( /whereami bilan tekshiring )
+CHAT_ID   = "@TaxiMegapark"           # gruppa ID ( /whereami bilan tekshiring )
 INSTAGRAM_URL = "https://www.instagram.com/mega_park_taxi?utm_source=ig_web_button_share_sheet&igsh=Ymo1bWhscDR3aWN2"
 WEBSITE_URL   = "https://megaparktaxi.uz"
 MAPS_URL      = "https://maps.app.goo.gl/8UAnRpQEXkYKJgjy7"
@@ -38,19 +38,19 @@ TZ = timezone("Asia/Tashkent")
 
 WEEKLY_CONTENT = {
     0: {
-        "text": "💎✨ DUSHANBA TONGI MUBORAK!\n\nYangi hafta – sizlarga omadli safarlar, muloyim mijozlar, tinch yo‘llar tilaymiz! 🚖💛",
+        "text": "💎✨ DUSHANBA TONGI MUBORAK! Yangi hafta – sizlarga omadli safarlar, muloyim mijozlar, tinch yo‘llar tilaymiz! 🚖💛",
         "image": "images/monday.png"
     },
     1: {
-        "text": "🚀💫 SESHANBA MUBORAK!\n\nYo‘l sizni kutyapti, rul sizni sog‘ingan. 🌈 Bugungi safaringiz ham baraka bilan to‘lsin! 💪🚖",
+        "text": "🚀💫 SESHANBA MUBORAK!  Yo‘l sizni kutyapti, rul sizni sog‘ingan. 🌈 Bugungi safaringiz ham baraka bilan to‘lsin! 💪🚖",
         "image": "images/tuesday.png"
     },
     2: {
-        "text": "💫🌟 CHORSHANBA MUBORAK!\n\nHaftaning o‘rtasi – to‘xtamaslik va harakatda bo‘lish vaqti! 🔥 Bugun omad siz bilan bo‘lsin! 🚕💛",
+        "text": "💫🌟 CHORSHANBA MUBORAK!  Haftaning o‘rtasi – to‘xtamaslik va harakatda bo‘lish vaqti! 🔥 Bugun omad siz bilan bo‘lsin! 🚕💛",
         "image": "images/wednesday.png"
     },
     3: {
-        "text": "🌿💚 PAYSHANBA MUBORAK!\n\nBugungi kuningiz mijozlarga, safarlaringiz esa omadga to‘la bo‘lsin! ✨🚖💛",
+        "text": "🌿💚 PAYSHANBA MUBORAK! Bugungi kuningiz mijozlarga, safarlaringiz esa omadga to‘la bo‘lsin! ✨🚖💛",
         "image": "images/thursday.png"
     },
     4: {
@@ -58,7 +58,7 @@ WEEKLY_CONTENT = {
         "image": "images/friday.png"
     },
     5: {
-        "text": "🌈💎 SHANBA MUBORAK!\n\nDam oling, kuch to‘plang, yangi safarlarga tayyorlaning. 😌 Tinchlik va baraka siz bilan bo‘lsin! 🚖✨",
+        "text": "🌈💎 SHANBA MUBORAK! Dam oling, kuch to‘plang, yangi safarlarga tayyorlaning. 😌 Tinchlik va baraka siz bilan bo‘lsin! 🚖✨",
         "image": "images/saturday.png"
     },
     6: {
