@@ -1,4 +1,4 @@
-#!/home/jony/jony0044/week/.venv/bin/python3
+#!/root/sardor/week_bot/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
